@@ -3,28 +3,44 @@ import java.lang.Math;
 
 public class ScientificCalculator {
 
-    // Basic Operations
-    public static double add(double num1, double num2) {
-        return num1 + num2;
-    }
-
-    public static double subtract(double num1, double num2) {
-        return num1 - num2;
-    }
-
-    public static double multiply(double num1, double num2) {
-        return num1 * num2;
-    }
-
-    public static double divide(double num1, double num2) {
-        if (num2 == 0) {
-            System.out.println("Error! Division by zero.");
-            return Double.NaN;
+    // Basic Operations on n numbers
+    public static double add(double[] numbers) {
+        double sum = 0;
+        for (double num : numbers) {
+            sum += num;
         }
-        return num1 / num2;
+        return sum;
     }
 
-    // Advanced Operations
+    public static double subtract(double[] numbers) {
+        double result = numbers[0];
+        for (int i = 1; i < numbers.length; i++) {
+            result -= numbers[i];
+        }
+        return result;
+    }
+
+    public static double multiply(double[] numbers) {
+        double result = 1;
+        for (double num : numbers) {
+            result *= num;
+        }
+        return result;
+    }
+
+    public static double divide(double[] numbers) {
+        double result = numbers[0];
+        for (int i = 1; i < numbers.length; i++) {
+            if (numbers[i] == 0) {
+                System.out.println("Error! Division by zero.");
+                return Double.NaN;
+            }
+            result /= numbers[i];
+        }
+        return result;
+    }
+
+    // Advanced Operations (unary)
     public static double squareRoot(double num) {
         if (num < 0) {
             System.out.println("Error! Square root of a negative number.");
@@ -65,6 +81,17 @@ public class ScientificCalculator {
         return Math.tan(Math.toRadians(angle));
     }
 
+    // Method to handle input for n numbers
+    public static double[] getNumbers(int count) {
+        Scanner scanner = new Scanner(System.in);
+        double[] numbers = new double[count];
+        for (int i = 0; i < count; i++) {
+            System.out.println("Enter number " + (i + 1) + ": ");
+            numbers[i] = scanner.nextDouble();
+        }
+        return numbers;
+    }
+
     // Method to handle calculator operations
     public static void calculate() {
         Scanner scanner = new Scanner(System.in);
@@ -73,8 +100,10 @@ public class ScientificCalculator {
 
         while (true) {
             if (firstOperation) {
-                System.out.println("Enter the first number: ");
-                result = scanner.nextDouble();
+                System.out.println("Enter the number of operands for this operation: ");
+                int n = scanner.nextInt();
+                double[] numbers = getNumbers(n);
+                result = numbers[0];  // Default to the first number
                 firstOperation = false;
             }
 
@@ -87,47 +116,60 @@ public class ScientificCalculator {
             }
 
             double num2 = 0;
+            int count = 0;
+            double[] numbers = null;
 
-            // For non-single argument operations, ask for second input
-            if (!(operation.equals("sqrt") || operation.equals("log") || operation.equals("log10")
-                  || operation.equals("sin") || operation.equals("cos") || operation.equals("tan"))) {
-                System.out.println("Enter the second number: ");
-                num2 = scanner.nextDouble();
+            // Operations requiring multiple numbers (add, subtract, multiply, divide)
+            if (operation.equals("+") || operation.equals("-") || operation.equals("*") || operation.equals("/")) {
+                System.out.println("How many numbers would you like to operate on?");
+                count = scanner.nextInt();
+                numbers = getNumbers(count);
             }
 
+            // For single argument operations (sqrt, log, sin, etc.)
             switch (operation) {
                 case "+":
-                    result = add(result, num2);
+                    result = add(numbers);
                     break;
                 case "-":
-                    result = subtract(result, num2);
+                    result = subtract(numbers);
                     break;
                 case "*":
-                    result = multiply(result, num2);
+                    result = multiply(numbers);
                     break;
                 case "/":
-                    result = divide(result, num2);
+                    result = divide(numbers);
                     break;
                 case "sqrt":
-                    result = squareRoot(result);
+                    System.out.println("Enter the number for square root: ");
+                    result = squareRoot(scanner.nextDouble());
                     break;
                 case "pow":
-                    result = power(result, num2);
+                    System.out.println("Enter the base: ");
+                    double base = scanner.nextDouble();
+                    System.out.println("Enter the exponent: ");
+                    double exponent = scanner.nextDouble();
+                    result = power(base, exponent);
                     break;
                 case "log":
-                    result = logarithm(result);
+                    System.out.println("Enter the number for natural logarithm: ");
+                    result = logarithm(scanner.nextDouble());
                     break;
                 case "log10":
-                    result = logarithm10(result);
+                    System.out.println("Enter the number for logarithm base 10: ");
+                    result = logarithm10(scanner.nextDouble());
                     break;
                 case "sin":
-                    result = sine(result);
+                    System.out.println("Enter the angle (in degrees) for sine: ");
+                    result = sine(scanner.nextDouble());
                     break;
                 case "cos":
-                    result = cosine(result);
+                    System.out.println("Enter the angle (in degrees) for cosine: ");
+                    result = cosine(scanner.nextDouble());
                     break;
                 case "tan":
-                    result = tangent(result);
+                    System.out.println("Enter the angle (in degrees) for tangent: ");
+                    result = tangent(scanner.nextDouble());
                     break;
                 default:
                     System.out.println("Invalid operation! Please try again.");
