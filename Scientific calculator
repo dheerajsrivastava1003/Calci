@@ -1,0 +1,156 @@
+import java.util.Scanner;
+import java.lang.Math;
+
+public class ScientificCalculator {
+
+    // Basic Operations
+    public static double add(double num1, double num2) {
+        return num1 + num2;
+    }
+
+    public static double subtract(double num1, double num2) {
+        return num1 - num2;
+    }
+
+    public static double multiply(double num1, double num2) {
+        return num1 * num2;
+    }
+
+    public static double divide(double num1, double num2) {
+        if (num2 == 0) {
+            System.out.println("Error! Division by zero.");
+            return Double.NaN;
+        }
+        return num1 / num2;
+    }
+
+    // Advanced Operations
+    public static double squareRoot(double num) {
+        if (num < 0) {
+            System.out.println("Error! Square root of a negative number.");
+            return Double.NaN;
+        }
+        return Math.sqrt(num);
+    }
+
+    public static double power(double base, double exponent) {
+        return Math.pow(base, exponent);
+    }
+
+    public static double logarithm(double num) {
+        if (num <= 0) {
+            System.out.println("Error! Logarithm of a non-positive number.");
+            return Double.NaN;
+        }
+        return Math.log(num);
+    }
+
+    public static double logarithm10(double num) {
+        if (num <= 0) {
+            System.out.println("Error! Logarithm base 10 of a non-positive number.");
+            return Double.NaN;
+        }
+        return Math.log10(num);
+    }
+
+    public static double sine(double angle) {
+        return Math.sin(Math.toRadians(angle));
+    }
+
+    public static double cosine(double angle) {
+        return Math.cos(Math.toRadians(angle));
+    }
+
+    public static double tangent(double angle) {
+        return Math.tan(Math.toRadians(angle));
+    }
+
+    // Method to handle calculator operations
+    public static void calculate() {
+        Scanner scanner = new Scanner(System.in);
+        double result = 0;
+        boolean firstOperation = true;
+
+        while (true) {
+            if (firstOperation) {
+                System.out.println("Enter the first number: ");
+                result = scanner.nextDouble();
+                firstOperation = false;
+            }
+
+            System.out.println("Choose an operation (+, -, *, /, sqrt, pow, log, log10, sin, cos, tan, exit): ");
+            String operation = scanner.next();
+
+            if (operation.equalsIgnoreCase("exit")) {
+                System.out.println("Exiting the calculator. Final result: " + result);
+                break;
+            }
+
+            double num2 = 0;
+
+            // For non-single argument operations, ask for second input
+            if (!(operation.equals("sqrt") || operation.equals("log") || operation.equals("log10")
+                  || operation.equals("sin") || operation.equals("cos") || operation.equals("tan"))) {
+                System.out.println("Enter the second number: ");
+                num2 = scanner.nextDouble();
+            }
+
+            switch (operation) {
+                case "+":
+                    result = add(result, num2);
+                    break;
+                case "-":
+                    result = subtract(result, num2);
+                    break;
+                case "*":
+                    result = multiply(result, num2);
+                    break;
+                case "/":
+                    result = divide(result, num2);
+                    break;
+                case "sqrt":
+                    result = squareRoot(result);
+                    break;
+                case "pow":
+                    result = power(result, num2);
+                    break;
+                case "log":
+                    result = logarithm(result);
+                    break;
+                case "log10":
+                    result = logarithm10(result);
+                    break;
+                case "sin":
+                    result = sine(result);
+                    break;
+                case "cos":
+                    result = cosine(result);
+                    break;
+                case "tan":
+                    result = tangent(result);
+                    break;
+                default:
+                    System.out.println("Invalid operation! Please try again.");
+                    break;
+            }
+
+            System.out.println("Result: " + result);
+
+            // Ask the user if they want to continue
+            System.out.println("Do you want to continue with the result? (yes/no)");
+            String continueCalculation = scanner.next();
+
+            if (continueCalculation.equalsIgnoreCase("no")) {
+                firstOperation = true;
+                System.out.println("Starting a new calculation.");
+            }
+        }
+
+        scanner.close();
+    }
+
+    public static void main(String[] args) {
+        System.out.println("Welcome to the Scientific Calculator!");
+        calculate();
+    }
+}
