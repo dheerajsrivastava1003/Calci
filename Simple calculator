@@ -1,0 +1,61 @@
+import java.util.Scanner;
+
+public class SimpleCalculator {
+
+    // Method for addition of n numbers
+    public static double add(double[] numbers) {
+        double sum = 0;
+        for (double num : numbers) {
+            sum += num;
+        }
+        return sum;
+    }
+
+    // Method for subtraction of n numbers
+    public static double subtract(double[] numbers) {
+        double result = numbers[0];
+        for (int i = 1; i < numbers.length; i++) {
+            result -= numbers[i];
+        }
+        return result;
+    }
+
+    // Method for multiplication of n numbers
+    public static double multiply(double[] numbers) {
+        double result = 1;
+        for (double num : numbers) {
+            result *= num;
+        }
+        return result;
+    }
+
+    // Method for division of n numbers
+    public static double divide(double[] numbers) {
+        double result = numbers[0];
+        for (int i = 1; i < numbers.length; i++) {
+            if (numbers[i] == 0) {
+                System.out.println("Error! Division by zero.");
+                return Double.NaN;
+            }
+            result /= numbers[i];
+        }
+        return result;
+    }
+
+    // Method to get n numbers from the user
+    public static double[] getNumbers(int count) {
+        Scanner scanner = new Scanner(System.in);
+        double[] numbers = new double[count];
+        for (int i = 0; i < count; i++) {
+            System.out.println("Enter number " + (i + 1) + ": ");
+            numbers[i] = scanner.nextDouble();
+        }
+        return numbers;
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Welcome to the Simple Calculator!");
+        System.out.println("How many numbers would you like to operate on?");
+        int count = s
